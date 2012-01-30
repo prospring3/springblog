@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+  <table-filter match-catalog="springblog" match-name="app_user"/>
+  <table-filter match-catalog="springblog" match-name="attachment"/>
+  <table-filter match-catalog="springblog" match-name="category"/>
+  <table-filter match-catalog="springblog" match-name="comment"/>
+  <table-filter match-catalog="springblog" match-name="comment_attachment_detail"/>
+  <table-filter match-catalog="springblog" match-name="entry"/>
+  <table-filter match-catalog="springblog" match-name="entry_attachment_detail"/>
+  <table-filter match-catalog="springblog" match-name="entry_rating"/>
+  <table-filter match-catalog="springblog" match-name="role"/>
+  <table-filter match-catalog="springblog" match-name="user_role_detail"/>
+</hibernate-reverse-engineering>

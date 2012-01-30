@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entries>
+    <entry>
+        <subject>SpringBlog by batch</subject>
+        <category>Spring</category>
+        <subCategory>Spring Batch</subCategory>
+        <body>
+            Testing SpringBlog posting entry by batch upload
+        </body>
+    </entry>
+</entries>
