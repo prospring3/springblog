@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div id="footer" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:spring="http://www.springframework.org/tags" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url value="/blogs" var="homeUrl" />
+	
+	<spring:message code="label_home" var="labelHome"/>
+    <spring:message code="label_locale_en_US" var="labelEnUs"/>
+    <spring:message code="label_local_zh_HK" var="labelZhHk"/>	
+	
+	<span> 
+        <a href="${homeUrl}">${labelHome}</a> |
+        <a href="${homeUrl}?lang=en_US">${labelEnUs}</a> |
+        <a href="${homeUrl}?lang=zh_HK">${labelZhHk}</a>	   
+	</span>
+
+	<spring:url value="/resources/images/apress-logo.jpg" var="logo" />
+	<spring:message code="global_sponsored" htmlEscape="false"
+		var="sponsored" />
+	<span> <a href="http://springsource.com"
+		title="${fn:escapeXml(sponsored)}"> <img align="right"
+			alt="${fn:escapeXml(sponsored)}" src="${logo}" />
+	</a>
+	</span>
+</div>

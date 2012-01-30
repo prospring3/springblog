@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:repository="http://www.springframework.org/schema/data/repository"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/data/repository http://www.springframework.org/schema/data/repository/spring-repository-1.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+    <aop:aspectj-autoproxy/>
+
+    <jdbc:embedded-database id="dataSource" type="H2">
+        <jdbc:script location="classpath:sql/schema.sql"/>
+        <jdbc:script location="classpath:sql/initial-data.sql"/>    
+    </jdbc:embedded-database>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="emf"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+        </property>        
+        <property name="packagesToScan" value="com.apress.prospring3.springblog.domain"/>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+                <prop key="hibernate.max_fetch_depth">3</prop>
+                <prop key="hibernate.jdbc.fetch_size">50</prop>
+                <prop key="hibernate.jdbc.batch_size">10</prop>
+                <prop key="hibernate.show_sql">true</prop>
+
+                <!-- Listeners for Hibernate Envers -->
+              
+                <prop key="hibernate.ejb.event.post-insert">
+                    org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener
+                </prop>   
+                <prop key="hibernate.ejb.event.post-update">
+                    org.hibernate.ejb.event.EJB3PostUpdateEventListener,org.hibernate.envers.event.AuditEventListener
+                </prop>
+                <prop key="hibernate.ejb.event.post-delete">
+                    org.hibernate.ejb.event.EJB3PostDeleteEventListener,org.hibernate.envers.event.AuditEventListener
+                </prop>
+                <prop key="hibernate.ejb.event.pre-collection-update">
+                    org.hibernate.envers.event.AuditEventListener
+                </prop>
+                <prop key="hibernate.ejb.event.pre-collection-remove">
+                    org.hibernate.envers.event.AuditEventListener
+                </prop>
+                <prop key="hibernate.ejb.event.post-collection-recreate">
+                    org.hibernate.envers.event.AuditEventListener
+                </prop>
+                
+                <!-- Properties for Hibernate Envers --> 
+                <prop key="org.hibernate.envers.audit_table_suffix">_H</prop>
+                <prop key="org.hibernate.envers.revision_field_name">AUDIT_REVISION</prop>
+                <prop key="org.hibernate.envers.revision_type_field_name">ACTION_TYPE</prop>
+                <prop key="org.hibernate.envers.audit_strategy">org.hibernate.envers.strategy.ValidityAuditStrategy</prop>
+                <prop key="org.hibernate.envers.audit_strategy_validity_end_rev_field_name">AUDIT_REVISION_END</prop>
+                <prop key="org.hibernate.envers.audit_strategy_validity_store_revend_timestamp">true</prop>
+                <prop key="org.hibernate.envers.audit_strategy_validity_revend_timestamp_field_name">AUDIT_REVISION_END_TS</prop>                
+            </props>        
+        </property>
+    </bean>
+
+    <context:annotation-config/>
+    
+    <jpa:repositories base-package="com.apress.prospring3.springblog.repository"
+                      entity-manager-factory-ref="emf"
+                      transaction-manager-ref="transactionManager"/>
+    
+    <context:component-scan base-package="com.apress.prospring3.springblog.common, com.apress.prospring3.springblog.service.jpa"/>
+
+    <jpa:auditing auditor-aware-ref="auditorAwareBean"/>
+    
+    <bean id="auditorAwareBean" class="com.apress.prospring3.springblog.auditor.AuditorAwareBean"/>
+
+    <util:list id="obscenities">
+        <value>crap</value>
+    </util:list>
+    
+</beans>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.apress.prospring3.springblog.persistence.CategoryMapper">
+
+    <resultMap type="Category" id="categoryResultMap">
+        <id property="categoryId" column="category_id" />     
+    </resultMap>
+
+    <select id="findAll" resultMap="categoryResultMap">
+        SELECT 
+            CATEGORY_ID
+        FROM CATEGORY C       
+    </select>
+    
+    <select id="findAllParentCategory" resultMap="categoryResultMap">
+        SELECT 
+            CATEGORY_ID
+        FROM CATEGORY C WHERE C.PARENT_CATEGORY_ID IS NULL       
+    </select>
+    
+    <select id="findAllSubCategory" parameterType="string" resultMap="categoryResultMap">
+        SELECT 
+            CATEGORY_ID
+        FROM CATEGORY C WHERE C.PARENT_CATEGORY_ID = #{parentCategoryId}       
+    </select>         
+
+</mapper>

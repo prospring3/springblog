@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core" 
+     xmlns:fn="http://java.sun.com/jsp/jstl/functions" 
+     xmlns:spring="http://www.springframework.org/tags"
+     xmlns:form="http://www.springframework.org/tags/form"
+     xmlns:sec="http://www.springframework.org/security/tags"
+     xmlns:joda="http://www.joda.org/joda/time/tags"
+     version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    
+    <spring:message code="post_date_pattern" var="postDatePattern"/>
+
+    <spring:message code="label_blog_posting_entries" var="labelBlogPostingEntries"/>
+    <spring:message code="label_post_date" var="labelPostDate"/>
+    <spring:message code="label_subject" var="labelSubject"/>
+    <spring:message code="label_body" var="labelBody"/>
+    <spring:message code="label_category" var="labelCategory"/>
+    <spring:message code="label_sub_category" var="labelSubCategory"/>
+    <spring:message code="label_post_by" var="labelPostBy"/>
+    <spring:message code="label_from_post_date" var="labelFromPostDate"/>
+    <spring:message code="label_to_post_date" var="labelToPostDate"/>
+    <spring:message code="label_last_modified_date" var="labelLastModifiedDate"/>
+    <spring:message code="label_last_modified_by" var="labelLastModifiedBy"/>    
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#uploadEntryAttachment').click(function() {
+                $('#entryAttachmentUpload').show();  
+            });
+            $('.commentAttachmentUpload').click(function(event) {
+            	$("#commentAttachmentUpload_" + event.target.id).show();
+            });
+            
+            $('#dialog-audit').dialog({
+                autoOpen: false,
+                height: 600,
+                width: 900,
+                modal: true         
+            });
+            
+            $('.viewEntryAuditLink').click(function(event) {
+            	//alert('Entry Id: ' + event.target.id);
+            	
+                $("#auditList").jqGrid({
+                    url:'/springblog/audit/blog/' + event.target.id,
+                    datatype: 'json',
+                    mtype: 'GET',
+                    colNames:['${labelLastModifiedDate}', '${labelLastModifiedBy}', '${labelPostDate}', '${labelSubject}', '${labelBody}', '${labelCategory}', '${labelSubCategory}', '${labelPostBy}'],
+                    colModel :[ 
+                      {name:'lastModifiedDateString', index:'lastModifiedDateString', width:120, align:'center', sortable:false},
+                      {name:'lastModifiedBy', index:'lastModifiedBy', width:80, sortable:false},                      
+                      {name:'postDateString', index:'postDate', width:80, align:'center', sortable:false},
+                      {name:'subject', index:'subject', width:100, sortable:false}, 
+                      {name:'shortBody', index:'shortBody', width:200, sortable:false}, 
+                      {name:'categoryId', index:'categoryId', width:80, align:'center', sortable:false}, 
+                      {name:'subCategoryId', index:'subCategoryId', width:80, align:'center', sortable:false},  
+                      {name:'createdBy', index:'createdBy', width:80, sortable:false} 
+                    ],
+                    jsonReader : {
+                        root:"entryData",
+                        page: "currentPage",
+                        total: "totalPages",
+                        records: "totalRecords",
+                        repeatitems: false,
+                        id: "id"                        
+                    },      
+                    viewrecords: true,
+                    gridview: true,
+                    height: 500,
+                    caption: 'Entry Audit History'
+                  });             	
+            	
+                $('#dialog-audit').dialog('open');
+            });             
+        });        
+    </script>
+
+    <h1>Blog Entry</h1>
+
+    <div id="blogEntry">
+
+        <c:if test="${not empty message}">
+            <div id="message" class="${message.type}">${message.message}</div>
+        </c:if>
+
+        <table>
+            <tr>
+                <td>Subject</td>
+                <td>${entry.subject}</td>
+            </tr>
+            <tr>
+                <td>Category</td>
+                <td>${entry.categoryId}</td>
+            </tr>   
+            <tr>
+                <td>Sub-Category</td>
+                <td>${entry.subCategoryId}</td>
+            </tr>
+            <tr>
+                <td>Body</td>
+                <td>${entry.body}</td>
+            </tr>
+            <tr>
+                <td>Post Date</td>
+                <td><joda:format value="${entry.postDate}" pattern="${postDatePattern}"/></td>
+            </tr>
+            <tr>
+                <td>Post By</td>
+                <td>${entry.createdBy}</td>
+            </tr>
+            <tr>
+                <td>Create Date</td>
+                <td>${entry.createdDate}</td>
+            </tr> 
+            <tr>
+                <td>Last Modified Date</td>
+                <td>${entry.lastModifiedDate}</td>
+            </tr>
+            <tr>
+                <td>Attachments</td>
+                <td>
+                    <c:if test="${not empty entry.attachments}">
+                        <c:forEach items="${entry.attachments}" var="attachment">
+                            <a href="/springblog/blogs/filedownload/entry/${attachment.id}" target="_blank">${attachment.fileName}</a>
+                            <br/>
+                        </c:forEach>
+                    </c:if>
+                </td>
+            </tr>            
+            <tr>
+                <td colspan="2">${fn:length(entry.comments)} comments</td>
+            </tr>                                                                                               
+        </table>         
+        
+        <sec:authorize access="isAuthenticated()">
+            <c:if test="${entry.createdBy == pageContext.request.userPrincipal.name}">
+	            <a href="/springblog/blogs/${entry.id}?form">Edit</a> | 
+	            <a href="javascript:void(0);" id="uploadEntryAttachment">Upload Attachment</a> |
+            </c:if>
+        </sec:authorize>
+        <sec:authorize access="isAuthenticated()">  
+            <a href="/springblog/blogs/${entry.id}/comments?form">Post a comment</a>
+        </sec:authorize>
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            | <a href="javascript:void(0);" id="${entry.id}" class="viewEntryAuditLink">View Audit History</a>
+        </sec:authorize>           
+                              
+    </div>
+    
+    <div id="entryAttachmentUpload" hidden="true">
+        <h3>File Upload</h3>
+        <form:form action="fileupload" modelAttribute="uploadItem" name="fileuploadForm" method="post" enctype="multipart/form-data">
+            <input name="blogId" type="hidden" value="${entry.id}"/>
+            <input name="uploadType" type="hidden" value="entry"/>
+	        <label for="file">
+	            File*
+	        </label>
+	        <input name="file" type="file"/>            
+            <br/>
+            <button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                <span class="ui-button-text">Upload</span>    
+            </button>            
+        </form:form>     
+    </div>
+    
+    <!-- Display comments -->
+    <c:if test="${not empty entry.comments}">
+    <h2>Comments</h2>
+    <div id="comments">
+    
+        <c:forEach var="comment" items="${entry.comments}">
+            <table>
+                <tr>
+                    <td>Subject</td>
+	                <td>${comment.subject}</td>
+	            </tr>
+                <tr>
+                    <td>Body</td>
+                    <td>${comment.body}</td>
+                </tr>
+                <tr>
+                    <td>Post By</td>
+                    <td>${comment.postBy}</td>
+                </tr> 
+                <tr>
+                    <td>Reply To</td>
+                    <td>${comment.replyTo}</td>
+                </tr>
+                <tr>
+                    <td>Post Date</td>
+                    <td><joda:format value="${entry.postDate}" pattern="${postDatePattern}"/></td>
+                </tr>
+	            <tr>
+	                <td>Attachments</td>
+	                <td>
+	                    <c:if test="${not empty comment.attachments}">
+	                        <c:forEach items="${comment.attachments}" var="attachment">
+	                            <a href="/springblog/blogs/filedownload/comment/${attachment.id}" target="_blank">${attachment.fileName}</a>
+	                            <br/>
+	                        </c:forEach>
+	                    </c:if>
+	                </td>
+	            </tr>                                                               	            
+	        </table>
+	        <sec:authorize access="isAuthenticated()">
+                <c:if test="${comment.postBy == pageContext.request.userPrincipal.name}">
+	               <a href="/springblog/blogs/${entry.id}/comments/${comment.id}?form">Edit</a> |
+	               <a href="javascript:void(0);" id="${comment.id}" class="commentAttachmentUpload">Upload Attachment</a>
+	            </c:if>
+	        </sec:authorize>
+		    <div id="commentAttachmentUpload_${comment.id}" hidden="true">
+		        <h3>File Upload</h3>
+		        <form:form action="fileupload" modelAttribute="uploadItem" name="fileuploadForm" method="post" enctype="multipart/form-data">
+		            <input name="blogId" type="hidden" value="${entry.id}"/>
+		            <input name="commentId" type="hidden" value="${comment.id}"/>
+		            <input name="uploadType" type="hidden" value="comment"/>
+		            <label for="file">
+		                File*
+		            </label>
+		            <input name="file" type="file"/>    
+		            <br/>
+		            <button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+		                <span class="ui-button-text">Upload</span>    
+		            </button>            
+		        </form:form>     
+		    </div>	        
+	        <hr/>
+	        <p/>
+        </c:forEach>
+        
+    </div>
+    </c:if>
+
+    <div id="dialog-audit" title="Entry Audit">
+        <table id="auditList"><tr><td/></tr></table>
+    </div>
+
+</div>

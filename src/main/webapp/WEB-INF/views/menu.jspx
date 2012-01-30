@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div id="menu" xmlns:jsp="http://java.sun.com/JSP/Page" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core" 
+     xmlns:spring="http://www.springframework.org/tags"
+     xmlns:form="http://www.springframework.org/tags/form"
+     xmlns:sec="http://www.springframework.org/security/tags"
+     version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+    <script type="text/javascript">
+    $(function(){
+        $('#dialog-hint').dialog({
+            autoOpen: false,
+            height: 140,
+            modal: true         
+        });
+        
+        $('#hintLink').click(function() {
+            $('#dialog-hint').dialog('open');
+        });     
+    });
+    </script>
+	
+	<spring:message code="label_please_login_to_post_entries" var="labelPostEntries"/>
+	<spring:message code="label_new_blog_posting" var="labelNewPostEntry"/>
+	<spring:message code="label_user_maintenance" var="labelUserMaintenance"/>
+	<spring:url var="loginUrl" value="/j_spring_security_check" />
+	<spring:message code="label_login" var="labelLogin"/>
+	<spring:message code="label_username" var="labelUserName"/>
+	<spring:message code="label_password" var="labelPassword"/>
+    <spring:message code="label_login_hint" var="labelLoginHint"/>
+
+    <sec:authorize access="isAuthenticated()">
+        <a href="/springblog/blogs?form"><h4>${labelNewPostEntry}</h4></a>
+    </sec:authorize>
+   
+    <sec:authorize access="isAnonymous()">
+        <h4>${labelPostEntries}</h4>
+
+	    <c:if test='${(not empty message)}'>
+	        <div id="message" class="${message.type}">${message.message}</div>
+	    </c:if>
+        
+	    <div id="login">
+	       <form name="loginForm" action="${loginUrl}" method="post">
+	           <table>
+	               <caption align="left">${labelLogin}:</caption>
+	               <tr>
+	                   <td>${labelUserName}:</td>
+	                   <td><input type="text" name="j_username"/></td>
+	               </tr>
+	               <tr>
+	                   <td>${labelPassword}:</td>
+	                   <td><input type="password" name="j_password"/></td>
+	               </tr>
+	               <tr>
+	                   <td colspan="2" align="center"><input name="submit" type="submit" value="${labelLogin}"/></td>
+	               </tr>
+                   <tr>
+                       <td colspan="2" align="center"><a href="javascript:void(0);" id="hintLink">${labelLoginHint}</a></td>
+                   </tr>	                          
+	           </table>
+	       </form>
+	    </div>        
+    </sec:authorize> 
+    
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
+        <a href="javascript:alert('Sorry! Function not yet implemented.');"><h4>${labelUserMaintenance}</h4></a>
+    </sec:authorize>
+    
+    <div id="dialog-hint" title="Login Default Users">
+        <table>
+            <tr>
+                <td>Normal user:</td>
+                <td>user/user</td>
+            </tr>
+            <tr>
+                <td>Admin user:</td>
+                <td>admin/admin</td>
+            </tr>                                
+        </table>
+    </div>         
+
+</div>

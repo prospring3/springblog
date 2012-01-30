@@ -1,0 +1,5 @@
+<Context path="/springblog">
+<Loader
+    loaderClass="org.springframework.instrument.classloading.tomcat.TomcatInstrumentableClassLoader"
+    useSystemClassLoaderAsParent="false" />
+</Context>

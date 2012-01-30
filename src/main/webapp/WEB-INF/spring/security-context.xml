@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <!-- RESTful service using Basic authentication -->
+    <http pattern="/restful/**" create-session="stateless">
+        <intercept-url pattern='/**' access='ROLE_REMOTE' />
+        <http-basic />
+    </http>
+    
+    <!-- Additional filter chain for normal users, matching all other requests -->
+    <http use-expressions="true">
+        <intercept-url pattern='/blogs/*/comments/*' access='isAuthenticated()'/>
+        <intercept-url pattern='/*' access='permitAll' />
+        <form-login login-page="/blogs" authentication-failure-url="/security/loginfail" default-target-url="/blogs"/>
+        <logout logout-success-url="/blogs"/>
+    </http>
+    
+    <authentication-manager>
+        <authentication-provider user-service-ref="userDetailsService"/>
+    </authentication-manager>
+    
+    <!-- User Detail Services -->
+    <beans:bean id="userDetailsService" class="com.apress.prospring3.springblog.security.provider.UserDetailsServiceImpl"/>
+
+</beans:beans>

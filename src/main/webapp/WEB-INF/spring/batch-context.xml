@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:integration="http://www.springframework.org/schema/integration"
+    xmlns:file="http://www.springframework.org/schema/integration/file"
+    xmlns:batch="http://www.springframework.org/schema/batch"    
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+        http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean" >
+        <property name="databaseType" value="h2" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="isolationLevelForCreate" value="ISOLATION_DEFAULT"/>
+    </bean>    
+
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository" />
+    </bean>
+    
+    <!-- Spring Integration Configuration: Start -->
+    <integration:channel id="files"/>
+    
+    <integration:channel id="requests"/>
+    
+    <integration:channel id="statuses">
+        <integration:queue capacity="10"/>
+    </integration:channel>    
+    
+    <file:inbound-channel-adapter 
+        directory="file:/temp/entries"
+        channel="files">
+        <integration:poller id="poller" fixed-delay="5000"/>
+    </file:inbound-channel-adapter>    
+
+    <integration:transformer input-channel="files" output-channel="requests">
+        <bean class="com.apress.prospring3.springblog.batch.integration.FileMessageToJobRequest">
+            <property name="job" ref="importBlogPostEntryJob"/>
+            <property name="fileParameterName" value="inputFile"/>
+        </bean>
+    </integration:transformer>
+    
+    <integration:service-activator method="launch" input-channel="requests"
+        output-channel="statuses">
+        <bean id="messageHandler"
+            class="org.springframework.batch.integration.launch.JobLaunchingMessageHandler">
+            <constructor-arg ref="jobLauncher"/>
+        </bean>
+    </integration:service-activator>
+    <!-- Spring Integration Configuration: End -->     
+
+    <!-- XML Marshaller -->
+    <bean id="batchMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
+        <property name="mappingLocation" value="classpath:oxm-mapping.xml"/>
+    </bean>
+
+    <!-- Batch job: Contact import -->
+    <batch:job id="importBlogPostEntryJob">
+        <batch:step id="readWriteStep">
+            <batch:tasklet transaction-manager="transactionManager">
+                <batch:chunk
+                    reader="entryItemReader"
+                    processor="entryItemProcessor"
+                    writer="entryItemWriter"
+                    commit-interval="100"/>            
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+    
+    <bean id="entryItemReader" class="org.springframework.batch.item.xml.StaxEventItemReader" scope="step">
+        <property name="resource" value="file:///#{jobParameters['inputFile']}"/>
+        <property name="fragmentRootElementName" value="entry"/>
+        <property name="unmarshaller" ref="batchMarshaller"/>    
+    </bean>    
+
+    <bean id="entryItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter">
+        <property name="targetObject" ref="entryService" />
+        <property name="targetMethod" value="save" />    
+    </bean>         
+    
+    <bean id="batchValidator" class="com.apress.prospring3.springblog.batch.validator.BeanValidationValidator" />
+    
+    <bean id="entryItemProcessor" class="org.springframework.batch.item.validator.ValidatingItemProcessor">
+        <property name="validator" ref="batchValidator" />
+    </bean> 
+
+</beans>

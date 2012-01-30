@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd">
+
+    <!-- For embedded JH2 database -->
+    <beans profile="h2">
+        <jdbc:embedded-database id="dataSource" type="H2">
+            <jdbc:script location="classpath:sql/schema.sql"/>
+            <jdbc:script location="classpath:/org/springframework/batch/core/schema-h2.sql"/>
+            <jdbc:script location="classpath:sql/initial-data.sql"/>  
+        </jdbc:embedded-database>
+    </beans>
+
+    <!-- For MySQL database -->    
+    <beans profile="mysql">
+        <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+            destroy-method="close">
+            <property name="driverClass" value="com.mysql.jdbc.Driver" />
+            <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/springblog" />
+            <property name="user" value="springblog" />
+            <property name="password" value="springblog" />
+        </bean>
+    </beans>    
+
+</beans>

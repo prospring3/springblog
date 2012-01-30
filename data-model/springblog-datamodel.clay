@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<clay-model clay-version="2.0.1">
+<database-model author="" begin-script="" end-script="" id="61a9b3d:132ec4c7318:-8000" name="springblog-datamodel" sql-dialect-id="jp.azzurri.clay.dialect.MySQL_5_0_Dialect" version="1.0">
+<schema-list>
+<schema id="61a9b3d:132ec4c7318:-7ffd" name="DEFAULT_SCHEMA">
+<table-list>
+<table id="61a9b3d:132ec4c7318:-7fff" name="APP_USER">
+<column-list>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7fec" mandatory="true" name="USER_ID">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7fe9" mandatory="true" name="PASSWORD">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="40" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7fe6" mandatory="false" name="USER_NAME">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7fe3" mandatory="true" name="CREATED_BY">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7fe0" mandatory="true" name="CREATED_DATE">
+<data-type name="DATETIME" selected-variant-pattern="DATETIME"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7fdf" mandatory="true" name="LAST_MODIFIED_BY">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7fde" mandatory="true" name="LAST_MODIFIED_DATE">
+<data-type name="DATETIME" selected-variant-pattern="DATETIME"/>
+</column>
+</column-list>
+<primary-key id="61a9b3d:132ec4c7318:-7ffe" name="PK_APP_USER">
+<primary-key-column name="USER_ID"/>
+</primary-key>
+</table>
+<table id="61a9b3d:132ec4c7318:-7ffa" name="ROLE">
+<column-list>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7ff2" mandatory="true" name="ROLE_ID">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="40" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7fef" mandatory="false" name="DESCRIPTION">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="61a9b3d:132ec4c7318:-7ff9" name="PK_ROLE">
+<primary-key-column name="ROLE_ID"/>
+</primary-key>
+</table>
+<table id="61a9b3d:132ec4c7318:-7fdd" name="USER_ROLE_DETAIL">
+<column-list>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7fd7" mandatory="true" name="USER_ID">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7fd4" mandatory="true" name="ROLE_ID">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="61a9b3d:132ec4c7318:-7fdc" name="PK_USER_ROLE_DETAIL">
+<primary-key-column name="USER_ID"/>
+<primary-key-column name="ROLE_ID"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="61a9b3d:132ec4c7318:-7fb9" name="FK_USER_ROLE_DETAIL_1" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_APP_USER" referenced-table="APP_USER" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="USER_ID" referenced-key-column-name="USER_ID"/>
+</foreign-key>
+<foreign-key id="61a9b3d:132ec4c7318:-7f4e" name="FK_USER_ROLE_DETAIL_2" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_ROLE" referenced-table="ROLE" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="ROLE_ID" referenced-key-column-name="ROLE_ID"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+<table id="61a9b3d:132ec4c7318:-7f43" name="ENTRY">
+<column-list>
+<column auto-increment="true" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7f29" mandatory="true" name="ID">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="50" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7f1f" mandatory="true" name="SUBJECT">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="2000" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7f1e" mandatory="true" name="BODY">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7f1b" mandatory="true" name="POST_DATE">
+<data-type name="DATETIME" selected-variant-pattern="DATETIME"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7f18" mandatory="false" name="CATEGORY_ID">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7f15" mandatory="false" name="SUB_CATEGORY_ID">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="0" id="61a9b3d:132ec4c7318:-7f12" mandatory="true" name="RATING">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7f0f" mandatory="true" name="CREATED_BY">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7f0e" mandatory="true" name="CREATED_DATE">
+<data-type name="DATETIME" selected-variant-pattern="DATETIME"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7f0d" mandatory="true" name="LAST_MODIFIED_BY">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7f0c" mandatory="true" name="LAST_MODIFIED_DATE">
+<data-type name="DATETIME" selected-variant-pattern="DATETIME"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="0" id="61a9b3d:132ec4c7318:-7f09" mandatory="true" name="VERSION">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+</column-list>
+<primary-key id="61a9b3d:132ec4c7318:-7f42" name="PK_ENTRY">
+<primary-key-column name="ID"/>
+</primary-key>
+</table>
+<table id="61a9b3d:132ec4c7318:-7f3f" name="COMMENT">
+<column-list>
+<column auto-increment="true" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7f26" mandatory="true" name="ID">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="50" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7ed1" mandatory="true" name="SUBJECT">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="2000" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7ed0" mandatory="true" name="BODY">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7ecf" mandatory="true" name="POST_DATE">
+<data-type name="DATETIME" selected-variant-pattern="DATETIME"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7ece" mandatory="true" name="ENTRY_ID">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7ecd" mandatory="false" name="REPLY_TO">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7ecc" mandatory="false" name="POST_BY">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7ec9" mandatory="true" name="CREATED_BY">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7ec8" mandatory="true" name="CREATED_DATE">
+<data-type name="DATETIME" selected-variant-pattern="DATETIME"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7ec7" mandatory="true" name="LAST_MODIFIED_BY">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7ec6" mandatory="true" name="LAST_MODIFIED_DATE">
+<data-type name="DATETIME" selected-variant-pattern="DATETIME"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="0" id="61a9b3d:132ec4c7318:-7ec5" mandatory="true" name="VERSION">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+</column-list>
+<primary-key id="61a9b3d:132ec4c7318:-7f3e" name="PK_COMMENT">
+<primary-key-column name="ID"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="61a9b3d:132ec4c7318:-7e6d" name="FK_COMMENT_1" on-delete="CASCADE" on-update="UNSPECIFIED" referenced-key="PK_ENTRY" referenced-table="ENTRY" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="ENTRY_ID" referenced-key-column-name="ID"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+<table id="61a9b3d:132ec4c7318:-7f33" name="ENTRY_ATTACHMENT_DETAIL">
+<column-list>
+<column auto-increment="true" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7e41" mandatory="true" name="ID">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7e3e" mandatory="true" name="ENTRY_ID">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="665507c1:1351877338c:-7fe2" mandatory="true" name="FILE_NAME">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="50" decimal-digits="0" default-value="" id="665507c1:1351877338c:-7fdf" mandatory="true" name="CONTENT_TYPE">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="665507c1:1351877338c:-7fda" mandatory="false" name="FILE_DATA">
+<data-type name="BLOB" selected-variant-pattern="BLOB"/>
+</column>
+</column-list>
+<primary-key id="61a9b3d:132ec4c7318:-7f32" name="PK_ENTRY_ATTACHMENT_DETAIL">
+<primary-key-column name="ID"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="61a9b3d:132ec4c7318:-7e10" name="FK_ENTRY_ATTACHMENT_DETAIL_1" on-delete="CASCADE" on-update="UNSPECIFIED" referenced-key="PK_ENTRY" referenced-table="ENTRY" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="ENTRY_ID" referenced-key-column-name="ID"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+<table id="61a9b3d:132ec4c7318:-7f2f" name="COMMENT_ATTACHMENT_DETAIL">
+<column-list>
+<column auto-increment="true" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7e38" mandatory="true" name="ID">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7e33" mandatory="true" name="COMMENT_ID">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="665507c1:1351877338c:-7fd5" mandatory="true" name="FILE_NAME">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="50" decimal-digits="0" default-value="" id="665507c1:1351877338c:-7fd4" mandatory="true" name="CONTENT_TYPE">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="665507c1:1351877338c:-7fd1" mandatory="false" name="FILE_DATA">
+<data-type name="BLOB" selected-variant-pattern="BLOB"/>
+</column>
+</column-list>
+<primary-key id="61a9b3d:132ec4c7318:-7f2e" name="PK_COMMENT_ATTACHMENT_DETAIL">
+<primary-key-column name="ID"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="61a9b3d:132ec4c7318:-7dac" name="FK_COMMENT_ATTACHMENT_DETAIL_1" on-delete="CASCADE" on-update="UNSPECIFIED" referenced-key="PK_COMMENT" referenced-table="COMMENT" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="COMMENT_ID" referenced-key-column-name="ID"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+<table id="61a9b3d:132ec4c7318:-7f08" name="CATEGORY">
+<column-list>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7f02" mandatory="true" name="CATEGORY_ID">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="61a9b3d:132ec4c7318:-7eff" mandatory="false" name="PARENT_CATEGORY_ID">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="61a9b3d:132ec4c7318:-7f07" name="PK_CATEGORY">
+<primary-key-column name="CATEGORY_ID"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="61a9b3d:132ec4c7318:-7ef4" name="FK_CATEGORY_1" on-delete="CASCADE" on-update="UNSPECIFIED" referenced-key="PK_CATEGORY" referenced-table="CATEGORY" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="PARENT_CATEGORY_ID" referenced-key-column-name="CATEGORY_ID"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+</table-list>
+</schema>
+</schema-list>
+</database-model>
+<diagram>
+<table-figure refid="61a9b3d:132ec4c7318:-7fff" x="79" y="56"/>
+<table-figure refid="61a9b3d:132ec4c7318:-7ffa" x="768" y="85"/>
+<table-figure refid="61a9b3d:132ec4c7318:-7fdd" x="465" y="85"/>
+<table-figure refid="61a9b3d:132ec4c7318:-7f43" x="169" y="248"/>
+<table-figure refid="61a9b3d:132ec4c7318:-7f3f" x="586" y="257"/>
+<table-figure refid="61a9b3d:132ec4c7318:-7f33" x="193" y="516"/>
+<table-figure refid="61a9b3d:132ec4c7318:-7f2f" x="580" y="522"/>
+<table-figure refid="61a9b3d:132ec4c7318:-7f08" x="745" y="161"/>
+</diagram>
+</clay-model>

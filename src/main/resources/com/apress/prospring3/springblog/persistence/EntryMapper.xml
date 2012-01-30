@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.apress.prospring3.springblog.persistence.EntryMapper">
+
+    <resultMap type="Entry" id="entryResultMap">
+        <id property="id" column="id" />
+        <result property="subject" column="subject"/>
+        <result property="body" column="body"/>
+        <result property="postDate" column="post_date"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="subCategoryId" column="sub_category_id"/>
+        <result property="rating" column="rating"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdDate" column="created_date"/>
+        <result property="lastModifiedBy" column="last_modified_by"/>
+        <result property="lastModifiedDate" column="last_modified_date"/>
+        <result property="version" column="version"/>        
+    </resultMap>
+
+    <select id="findAll" resultMap="entryResultMap">
+        SELECT 
+            ID, 
+            SUBJECT, 
+            BODY, 
+            POST_DATE,
+            CATEGORY_ID, 
+            SUB_CATEGORY_ID, 
+            CREATED_BY, 
+            CREATED_DATE, 
+            LAST_MODIFIED_BY, 
+            LAST_MODIFIED_DATE, 
+            VERSION 
+        FROM ENTRY E     
+    </select>
+
+    <select id="findById" parameterType="long" resultMap="entryResultMap">
+        SELECT 
+            ID, 
+            SUBJECT, 
+            BODY, 
+            POST_DATE,
+            CATEGORY_ID, 
+            SUB_CATEGORY_ID,  
+            CREATED_BY, 
+            CREATED_DATE, 
+            LAST_MODIFIED_BY, 
+            LAST_MODIFIED_DATE, 
+            VERSION 
+        FROM ENTRY E WHERE E.ID = #{id}       
+    </select>
+    
+    <select id="findByCategoryId" parameterType="string" resultMap="entryResultMap">
+        SELECT 
+            ID, 
+            SUBJECT, 
+            BODY, 
+            POST_DATE,
+            CATEGORY_ID, 
+            SUB_CATEGORY_ID, 
+            CREATED_BY, 
+            CREATED_DATE, 
+            LAST_MODIFIED_BY, 
+            LAST_MODIFIED_DATE, 
+            VERSION 
+        FROM ENTRY E WHERE E.CATEGORY_ID = #{categoryId}       
+    </select>
+    
+    <insert id="insertEntry" parameterType="Entry" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ENTRY (SUBJECT, BODY, POST_DATE, CATEGORY_ID, SUB_CATEGORY_ID,
+            CREATED_BY, CREATED_DATE, LAST_MODIFIED_BY, LAST_MODIFIED_DATE) 
+        VALUES (#{subject}, #{body}, #{postDate}, #{categoryId}, #{subCategoryId},
+            #{createdBy}, #{createdDate}, #{lastModifiedBy}, #{lastModifiedDate})    
+    </insert> 
+    
+    <update id="updateEntry" parameterType="Entry">
+        UPDATE ENTRY SET 
+            SUBJECT = #{subject}, 
+            BODY = #{body}, 
+            POST_DATE = #{postDate}, 
+            CATEGORY_ID = #{categoryId}, 
+            SUB_CATEGORY_ID = #{subCategoryId},
+            CREATED_BY = #{createdBy}, 
+            CREATED_DATE = #{createdDate}, 
+            LAST_MODIFIED_BY = #{lastModifiedBy}, 
+            LAST_MODIFIED_DATE = #{lastModifiedDate},
+            VERSION = VERSION + 1 
+        WHERE ID = #{id}
+            AND VERSION = #{version}
+    </update>     
+    
+    <delete id="deleteEntry" parameterType="long">
+        DELETE FROM ENTRY WHERE ID = #{id}
+    </delete> 
+    
+    <select id="findEntryByCriteria" parameterType="SearchCriteriaPage" resultMap="entryResultMap">
+        SELECT 
+            ID, 
+            SUBJECT, 
+            BODY, 
+            POST_DATE,
+            CATEGORY_ID, 
+            SUB_CATEGORY_ID, 
+            CREATED_BY, 
+            CREATED_DATE, 
+            LAST_MODIFIED_BY, 
+            LAST_MODIFIED_DATE, 
+            VERSION 
+        FROM ENTRY E 
+        <where>
+            <if test="subject != null">
+                SUBJECT like #{subject}
+            </if>
+            <if test="categoryId != null">
+                AND CATEGORY_ID like #{categoryId}
+            </if>
+            <if test="fromPostDate != null">
+                AND POST_DATE &gt;= #{fromPostDate}
+            </if>
+            <if test="toPostDate != null">
+                AND POST_DATE &lt;= #{toPostDate}
+            </if>                         
+        </where>   
+        LIMIT #{pageSize}
+        OFFSET #{offset}        
+    </select>
+    
+    <select id="findEntryCountByCriteria" parameterType="SearchCriteriaPage" resultType="int">
+        SELECT 
+            COUNT(*) 
+        FROM ENTRY E 
+        <where>
+            <if test="subject != null">
+                SUBJECT LIKE #{subject}
+            </if>
+            <if test="categoryId != null">
+                AND CATEGORY_ID LIKE #{categoryId}
+            </if>
+            <if test="fromPostDate != null">
+                AND POST_DATE &gt;= #{fromPostDate}
+            </if>
+            <if test="toPostDate != null">
+                AND POST_DATE &lt;= #{toPostDate}
+            </if>                         
+        </where>        
+    </select>                 
+
+</mapper>
