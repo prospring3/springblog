@@ -47,7 +47,7 @@ public class ListBasedObscenityFilter implements ObscenityFilter {
 	}
 
 	/**
-	 * Returns true if the data contains an obscenity otherwise returns false
+	 * Returns true if the data contain an obscenity otherwise returns false
 	 */
 	public boolean containsObscenities(String data) {
 		Matcher m = obscenityPattern.matcher(data);

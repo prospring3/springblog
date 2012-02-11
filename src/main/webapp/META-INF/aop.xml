@@ -1,7 +1,6 @@
 <aspectj>
     <weaver>
         <!-- only weave classes in our application-specific packages -->
-        <!-- <include within="com.apress.prospring3.springblog.common.aop.*" /> -->
         <include within="com.apress.prospring3.springblog.*" />
     </weaver>
     <aspects>
