@@ -32,9 +32,9 @@
     </integration:channel>    
     
     <file:inbound-channel-adapter 
-        directory="file:C:/temp/entries"
+        directory="file:/temp/entries"
         channel="files">
-        <integration:poller id="poller" fixed-delay="5000"/>
+        <integration:poller id="poller" fixed-delay="5000000"/>
     </file:inbound-channel-adapter>    
 
     <integration:transformer input-channel="files" output-channel="requests">

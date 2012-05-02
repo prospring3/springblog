@@ -18,6 +18,11 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 
     <aop:aspectj-autoproxy/>
+    
+    <context:load-time-weaver/>
+    
+    <!-- Application properties -->
+    <context:property-placeholder location="classpath:springblog.properties"/>        
 
     <jdbc:embedded-database id="dataSource" type="H2">
         <jdbc:script location="classpath:sql/schema.sql"/>
