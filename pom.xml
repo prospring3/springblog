@@ -430,7 +430,7 @@
 						<exclude>**/*_Roo_*</exclude>
 					</excludes>
                     <argLine>
-                      -javaagent:${settings.localRepository}/org/springframework/spring-instrument/3.1.0.RELEASE/spring-instrument-3.1.0.RELEASE.jar
+                      -javaagent:lib/spring-instrument-3.1.0.RELEASE.jar
                     </argLine>                    
 				</configuration>
 			</plugin>
