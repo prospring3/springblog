@@ -21,19 +21,21 @@
     <context:property-placeholder location="classpath:springblog.properties"/>    
 
     <!-- For embedded JH2 database -->
-<!--     <jdbc:embedded-database id="dataSource" type="H2">
+    <jdbc:embedded-database id="dataSource" type="H2">
         <jdbc:script location="classpath:sql/schema.sql"/>
         <jdbc:script location="classpath:sql/initial-data.sql"/>    
-    </jdbc:embedded-database> -->
+    </jdbc:embedded-database>
     
-    <!-- For MySQL database -->    
+    <!-- For MySQL database -->   
+    <!-- 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
         destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver" />
         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/springblog" />
         <property name="user" value="springblog" />
         <property name="password" value="springblog" />
-    </bean>    
+    </bean>
+    -->    
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="emf"/>
