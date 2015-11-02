@@ -19,7 +19,7 @@
 
     <!-- Enable AspectJ Load Time Weaving -->
     <aop:aspectj-autoproxy/>
-    <context:load-time-weaver/>    
+    <context:load-time-weaver/> 
     
     <!-- Import security context -->
     <import resource="security-context.xml"/>    
