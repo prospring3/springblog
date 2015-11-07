@@ -6,7 +6,7 @@ package com.apress.prospring3.springblog.mybatis.plugin;
 import java.util.Properties;
 
 import org.apache.ibatis.executor.Executor;
-import org.apache.ibatis.executor.parameter.DefaultParameterHandler;
+import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;

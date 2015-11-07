@@ -36,6 +36,15 @@ public class DateTimeTypeHandler extends BaseTypeHandler<DateTime> {
 		return null;
 	}	
 	
+	@Override
+	public DateTime getNullableResult(ResultSet rs, int index) throws SQLException {
+		java.sql.Timestamp sqlTimestamp = rs.getTimestamp(index);
+	    if (sqlTimestamp != null) {
+		      return new DateTime(sqlTimestamp.getTime());
+		    }		
+		return null;
+	}
+
 	public DateTime getNullableResult(CallableStatement cs, int columnIndex)
 			throws SQLException {
 	    java.sql.Timestamp sqlTimestamp = cs.getTimestamp(columnIndex);

@@ -16,18 +16,16 @@
         $(document).ready(function(){
         	$('#categoryId').change(function() {
         		var selectedCategoryId = $('#categoryId').val();
-        		//alert('Handler for .change() called.: ' + selectedCategoryId);
+        		console.log('Handler for .change() called.: ' + selectedCategoryId);
                 $.getJSON('/springblog/categories/listallchild/' + selectedCategoryId, function(data) {   
                     var options = '<option value=""></option>';
                     $.each(data, function(i, item) {
-                       //alert("Item name: " + item['categoryId'])
-                       options += '<option value="';
-                       options += item['categoryId'];
-                       options += '">';
-                       options += item['categoryId'];
-                       options += '</option>';                       
+                        var itemName = item['categoryId'];
+                        console.log("Item name: " + itemName);
+                        options = options + '&lt;option value="' + itemName + '"&gt;' + itemName + '&lt;/option&gt;';
+                        console.log("Options: " + options);
                     });
-                    //alert("Options: " + options);
+                    console.log("Options: " + options);
                     $("select#subCategoryId").html(options);
                  });        		
         	});        	

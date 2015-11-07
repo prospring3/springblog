@@ -15,7 +15,6 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -23,6 +22,8 @@ import org.joda.time.DateTime;
 import org.springframework.data.domain.Auditable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author Clarence
@@ -66,7 +67,7 @@ public abstract class AbstractBlogPosting implements BlogPosting, Auditable<Stri
     }
 
 	@Column(name = "POST_DATE")
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@DateTimeFormat(iso=ISO.DATE)
     public DateTime getPostDate() {
         return postDate;
@@ -102,7 +103,8 @@ public abstract class AbstractBlogPosting implements BlogPosting, Auditable<Stri
 	}
 
 	@Column(name = "CREATED_DATE")
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	//@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@DateTimeFormat(iso=ISO.DATE_TIME)
 	public DateTime getCreatedDate() {
 		return this.createdDate;
@@ -122,7 +124,7 @@ public abstract class AbstractBlogPosting implements BlogPosting, Auditable<Stri
 	}
 
 	@Column(name = "LAST_MODIFIED_DATE")
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")	
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@DateTimeFormat(iso=ISO.DATE_TIME)	
 	public DateTime getLastModifiedDate() {
 		return this.lastModifiedDate;
