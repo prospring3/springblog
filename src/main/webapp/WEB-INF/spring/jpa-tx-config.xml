@@ -29,28 +29,6 @@
                 <prop key="hibernate.jdbc.fetch_size">50</prop>
                 <prop key="hibernate.jdbc.batch_size">10</prop>
                 <prop key="hibernate.show_sql">true</prop>
-
-                <!-- Listeners for Hibernate Envers -->
-                <!--
-                <prop key="hibernate.ejb.event.post-insert">
-                    org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener
-                </prop>   
-                <prop key="hibernate.ejb.event.post-update">
-                    org.hibernate.ejb.event.EJB3PostUpdateEventListener,org.hibernate.envers.event.AuditEventListener
-                </prop>
-                <prop key="hibernate.ejb.event.post-delete">
-                    org.hibernate.ejb.event.EJB3PostDeleteEventListener,org.hibernate.envers.event.AuditEventListener
-                </prop>
-                <prop key="hibernate.ejb.event.pre-collection-update">
-                    org.hibernate.envers.event.AuditEventListener
-                </prop>
-                <prop key="hibernate.ejb.event.pre-collection-remove">
-                    org.hibernate.envers.event.AuditEventListener
-                </prop>
-                <prop key="hibernate.ejb.event.post-collection-recreate">
-                    org.hibernate.envers.event.AuditEventListener
-                </prop>
-                -->
                 
                 <!-- Properties for Hibernate Envers --> 
                 <prop key="org.hibernate.envers.audit_table_suffix">_H</prop>

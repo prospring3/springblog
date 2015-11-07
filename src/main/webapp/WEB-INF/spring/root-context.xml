@@ -18,9 +18,6 @@
     <context:property-placeholder location="classpath:springblog.properties"/>
 
     <!-- Enable AspectJ Load Time Weaving -->
-    <!--
-    <aop:aspectj-autoproxy/>
-    -->
     <context:load-time-weaver aspectj-weaving="on"/> 
     
     <!-- Import security context -->
