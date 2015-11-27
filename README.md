@@ -26,5 +26,6 @@ So please following the instructions below in running the application in STS and
 * Copy the file "/lib/spring-instrument-tomcat-4.2.2.RELEASE.jar into the "lib" folder of the extracted Tomcat server
 * In STS, create a new server which points to the Tomcat 8 installed above
 * Deploy the application to the Tomcat Server and verify that the application is up and running
+* Access the application via the URL: `http://localhost:8080/springblog/blogs`
 
 For any questions, please feel free to contact me and I will take a look.
